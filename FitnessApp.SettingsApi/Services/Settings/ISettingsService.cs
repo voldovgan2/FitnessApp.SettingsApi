@@ -1,6 +1,6 @@
-﻿using FitnessApp.Abstractions.Db.Entities.Base;
-using FitnessApp.Abstractions.Models.Base;
-using FitnessApp.Abstractions.Services.Base;
+﻿using FitnessApp.Common.Abstractions.Db.Entities.Base;
+using FitnessApp.Common.Abstractions.Models.Base;
+using FitnessApp.Common.Abstractions.Services.Base;
 
 namespace FitnessApp.SettingsApi.Services.Settings
 {

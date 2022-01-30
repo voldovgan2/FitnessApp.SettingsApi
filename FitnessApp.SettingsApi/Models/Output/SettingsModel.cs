@@ -1,4 +1,4 @@
-﻿using FitnessApp.Abstractions.Models.Base;
+﻿using FitnessApp.Common.Abstractions.Models.Base;
 using FitnessApp.SettingsApi.Enums;
 
 namespace FitnessApp.SettingsApi.Models.Output

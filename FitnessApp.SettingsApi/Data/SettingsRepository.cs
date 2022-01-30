@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using FitnessApp.Abstractions.Models.Base;
-using FitnessApp.Abstractions.Db.Repository.Base;
-using FitnessApp.Abstractions.Db.Configuration;
-using FitnessApp.Serializer.JsonMapper;
-using FitnessApp.Abstractions.Db.Entities.Base;
+using FitnessApp.Common.Abstractions.Db.Repository.Base;
+using FitnessApp.Common.Abstractions.Db.Entities.Base;
+using FitnessApp.Common.Abstractions.Models.Base;
+using FitnessApp.Common.Abstractions.Db.Configuration;
+using AutoMapper;
 
 namespace FitnessApp.SettingsApi.Data
 {
@@ -18,8 +18,8 @@ namespace FitnessApp.SettingsApi.Data
     {
         public SettingsRepository
         (
-            IOptions<MongoDbSettings> settings, 
-            IJsonMapper mapper, 
+            IOptions<CosmosDbSettings> settings, 
+            IMapper mapper,
             ILogger<SettingsRepository<BaseEntity, Model, CreateModel, UpdateModel>> log
         )
             : base(settings, mapper, log)

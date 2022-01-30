@@ -1,4 +1,4 @@
-﻿using FitnessApp.Abstractions.Models.Base;
+﻿using FitnessApp.Common.Abstractions.Models.Base;
 using System.Collections.Generic;
 
 namespace FitnessApp.SettingsApi.Models.Input

@@ -8,19 +8,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using FitnessApp.SettingsApi.Services.MessageBus;
 using FitnessApp.SettingsApi.Services.Settings;
 using Swashbuckle.AspNetCore.Filters;
-using FitnessApp.Serializer.JsonSerializer;
-using FitnessApp.Serializer.JsonMapper;
 using FitnessApp.SettingsApi.Data;
 using FitnessApp.SettingsApi.Models.Output;
 using FitnessApp.SettingsApi.Models.Input;
-using FitnessApp.NatsServiceBus;
 using FitnessApp.SettingsApi.Data.Entities;
-using FitnessApp.Abstractions.Db.Configuration;
-using FitnessApp.Abstractions.Services.Configuration;
-using FitnessApp.Abstractions.Services.Cache;
+using FitnessApp.Common.Abstractions.Services.Configuration;
+using FitnessApp.Common.Abstractions.Services.Cache;
+using FitnessApp.Common.Abstractions.Db.Configuration;
+using FitnessApp.Common.Serializer.JsonSerializer;
+using AutoMapper;
+using FitnessApp.SettingsApi.DependencyInjection;
+using FitnessApp.ServiceBus.AzzureServiceBus.Configuration;
 
 namespace FitnessApp.SettingsApi
 {
@@ -41,13 +41,18 @@ namespace FitnessApp.SettingsApi
                 options.EnableEndpointRouting = false;
             });
 
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.AddTransient<IJsonSerializer, JsonSerializer>();
 
-            services.AddTransient<IJsonMapper, JsonMapper>();
+            services.Configure<CosmosDbSettings>(Configuration.GetSection("CosmosConnection"));
 
-            services.Configure<MongoDbSettings>(Configuration.GetSection("MongoConnection"));
-
-            services.Configure<NatsBusSettings>(Configuration.GetSection("Nats"));
+            services.Configure<AzzureServiceBusSettings>(Configuration.GetSection("AzzureServiceBusSettings"));
 
             services.Configure<CacheSettings>(Configuration.GetSection("Cache"));
 
@@ -58,14 +63,11 @@ namespace FitnessApp.SettingsApi
             services.AddDistributedRedisCache(option =>
             {
                 option.Configuration = Configuration["Redis:Configuration"];
-                option.InstanceName = Configuration["Redis:InstanceName"];
             });
 
-            services.AddTransient<ISettingsService<Settings, SettingsModel, GetUsersSettingsModel, CreateSettingsModel, UpdateSettingsModel>, SettingsService<Settings, SettingsModel, GetUsersSettingsModel, CreateSettingsModel, UpdateSettingsModel>>();            
+            services.AddTransient<ISettingsService<Settings, SettingsModel, GetUsersSettingsModel, CreateSettingsModel, UpdateSettingsModel>, SettingsService<Settings, SettingsModel, GetUsersSettingsModel, CreateSettingsModel, UpdateSettingsModel>>();
 
-            services.AddSingleton<IServiceBus, ServiceBus>();
-
-            services.AddHostedService<SettingsMessageBusService>();            
+            services.AddSettingsMessageTopicSubscribersService();
 
             services.AddAuthentication(opts =>
             {

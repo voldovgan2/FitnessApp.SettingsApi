@@ -1,6 +1,6 @@
-﻿using FitnessApp.Abstractions.Db.Repository.Base;
-using FitnessApp.Abstractions.Db.Entities.Base;
-using FitnessApp.Abstractions.Models.Base;
+﻿using FitnessApp.Common.Abstractions.Db.Entities.Base;
+using FitnessApp.Common.Abstractions.Db.Repository.Base;
+using FitnessApp.Common.Abstractions.Models.Base;
 
 namespace FitnessApp.SettingsApi.Data
 {

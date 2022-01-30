@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 using FitnessApp.SettingsApi.Data;
-using FitnessApp.Abstractions.Services.Base;
-using FitnessApp.Abstractions.Db.Entities.Base;
-using FitnessApp.Abstractions.Models.Base;
-using FitnessApp.Abstractions.Services.Cache;
+using FitnessApp.Common.Abstractions.Services.Base;
+using FitnessApp.Common.Abstractions.Db.Entities.Base;
+using FitnessApp.Common.Abstractions.Models.Base;
+using FitnessApp.Common.Abstractions.Services.Cache;
 
 namespace FitnessApp.SettingsApi.Services.Settings
 {

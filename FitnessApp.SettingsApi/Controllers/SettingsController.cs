@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Contracts.Output;
 using FitnessApp.SettingsApi.Models.Input;
-using FitnessApp.Serializer.JsonMapper;
 using FitnessApp.SettingsApi.Services.Settings;
 using FitnessApp.SettingsApi.Data.Entities;
 using FitnessApp.SettingsApi.Models.Output;
+using AutoMapper;
 
 namespace FitnessApp.SettingsApi.Controllers
 {
@@ -19,12 +19,12 @@ namespace FitnessApp.SettingsApi.Controllers
     public class SettingsController : Controller
     {
         private readonly ISettingsService<Settings, SettingsModel, GetUsersSettingsModel, CreateSettingsModel, UpdateSettingsModel> _settingsService;
-        private readonly IJsonMapper _mapper;
+        private readonly IMapper _mapper;
 
         public SettingsController
         (
             ISettingsService<Settings, SettingsModel, GetUsersSettingsModel, CreateSettingsModel, UpdateSettingsModel> settingsService,
-            IJsonMapper mapper
+            IMapper mapper
         )
         {
             _settingsService = settingsService;
@@ -37,7 +37,7 @@ namespace FitnessApp.SettingsApi.Controllers
             var response = await _settingsService.GetItemByUserIdAsync(userId);
             if (response != null)
             {
-                var result = _mapper.Convert<SettingsContract>(response);
+                var result = _mapper.Map<SettingsContract>(response);
                 return Ok(result);
             }
             else
@@ -49,11 +49,11 @@ namespace FitnessApp.SettingsApi.Controllers
         [HttpPost("CreateSettings")]
         public async Task<IActionResult> CreateSettingsAsync([FromBody]CreateSettingsContract contract)
         {
-            var model = _mapper.Convert<CreateSettingsModel>(contract); 
+            var model = _mapper.Map<CreateSettingsModel>(contract); 
             var created = await _settingsService.CreateItemAsync(model);
             if (created != null)
             {
-                var result = _mapper.Convert<SettingsContract>(created);
+                var result = _mapper.Map<SettingsContract>(created);
                 return Ok(result);
             }
             else
@@ -65,11 +65,11 @@ namespace FitnessApp.SettingsApi.Controllers
         [HttpPut("UpdateSettings")]
         public async Task<IActionResult> UpdateSettingsAsync([FromBody]UpdateSettingsContract contract)
         {
-            var model = _mapper.Convert<UpdateSettingsModel>(contract);
+            var model = _mapper.Map<UpdateSettingsModel>(contract);
             var updated = await _settingsService.UpdateItemAsync(model);
             if (updated != null)
             {
-                var result = _mapper.Convert<SettingsContract>(updated);
+                var result = _mapper.Map<SettingsContract>(updated);
                 return Ok(result);                
             }
             else

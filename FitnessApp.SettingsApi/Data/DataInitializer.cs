@@ -5,7 +5,7 @@ using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Models.Output;
 using FitnessApp.SettingsApi.Data.Entities;
 using System.Linq;
-using FitnessApp.Abstractions.Services.Cache;
+using FitnessApp.Common.Abstractions.Services.Cache;
 
 namespace FitnessApp.SettingsApi.Data
 {
@@ -54,5 +54,4 @@ namespace FitnessApp.SettingsApi.Data
                 }
             }
         }
-    }
-}
+    }}

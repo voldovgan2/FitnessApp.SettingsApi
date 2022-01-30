@@ -1,12 +1,10 @@
-﻿using FitnessApp.SettingsApi.Enums;
-using FitnessApp.Abstractions.Db.Entities.Base;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using FitnessApp.Common.Abstractions.Db.Entities.Base;
+using FitnessApp.SettingsApi.Enums;
 
 namespace FitnessApp.SettingsApi.Data.Entities
 {
     public class Settings : IEntity
     {
-        [BsonId]
         public string UserId { get; set; }
         public PrivacyType CanFollow { get; set; }
         public PrivacyType CanViewFollowers { get; set; }
