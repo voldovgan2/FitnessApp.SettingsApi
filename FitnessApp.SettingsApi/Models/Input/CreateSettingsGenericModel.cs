@@ -1,9 +1,9 @@
-﻿using FitnessApp.Abstractions.Models.Base;
+﻿using FitnessApp.Common.Abstractions.Models.Generic;
 using FitnessApp.SettingsApi.Enums;
 
 namespace FitnessApp.SettingsApi.Models.Input
 {
-    public class CreateSettingsModel : ICreateModel
+    public class CreateSettingsGenericModel : ICreateGenericModel
     {
         public string UserId { get; set; }
         public PrivacyType CanFollow { get; set; }
@@ -14,9 +14,9 @@ namespace FitnessApp.SettingsApi.Models.Input
         public PrivacyType CanViewJournal { get; set; }
         public PrivacyType CanViewProgress { get; set; }
 
-        public static CreateSettingsModel Default(string userId)
+        public static CreateSettingsGenericModel Default(string userId)
         {
-            return new CreateSettingsModel 
+            return new CreateSettingsGenericModel
             {
                 UserId = userId,
                 CanFollow = PrivacyType.All,

@@ -1,37 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <UserSecretsId>382b3aa0-0b59-4aa1-bc54-5ffde2b7e70d</UserSecretsId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\volodymyr.dovhan\Documents\Personal\Fitness\Backend\FitnessApp\FitnessApp.SettingsApi\FitnessApp.SettingsApi.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FitnessApp.Abstractions" Version="1.0.6" />
-    <PackageReference Include="FitnessApp.IntegrationEvents" Version="1.0.1" />
-    <PackageReference Include="FitnessApp.Logger" Version="1.0.0" />
-    <PackageReference Include="FitnessApp.NatsServiceBus" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Redis.Core" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
-    <PackageReference Include="NATS.Client" Version="0.11.0" />
-    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="6.0.1" />
+    <Compile Remove="Logs\**" />
+    <Content Remove="Logs\**" />
+    <EmbeddedResource Remove="Logs\**" />
+    <None Remove="Logs\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logs\" />
+    <PackageReference Include="AspNetCore.HealthChecks.AzureServiceBus" Version="6.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.2" />
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+	<PackageReference Include="FitnessApp.Common" Version="1.0.95" />
+	<PackageReference Include="FitnessApp.ServiceBus" Version="1.0.19" />
+	<PackageReference Include="FluentValidation.AspNetCore" Version="11.2.2" />
+	<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
+	<PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.0.2105168" />
+    <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.4" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="6.0.1" />
+	<PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+	<PackageReference Include="Azure.Messaging.ServiceBus" Version="7.5.1" />
+	<PackageReference Include="Azure.Storage.Blobs" Version="12.14.0" />
   </ItemGroup>
-
 </Project>

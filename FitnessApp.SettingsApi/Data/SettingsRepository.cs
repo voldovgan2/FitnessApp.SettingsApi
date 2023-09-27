@@ -1,30 +1,20 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using FitnessApp.Abstractions.Models.Base;
-using FitnessApp.Abstractions.Db.Repository.Base;
-using FitnessApp.Abstractions.Db.Configuration;
-using FitnessApp.Serializer.JsonMapper;
-using FitnessApp.Abstractions.Db.Entities.Base;
+﻿using AutoMapper;
+using FitnessApp.Common.Abstractions.Db.DbContext;
+using FitnessApp.Common.Abstractions.Db.Repository.Generic;
+using FitnessApp.SettingsApi.Data.Entities;
+using FitnessApp.SettingsApi.Models.Input;
+using FitnessApp.SettingsApi.Models.Output;
 
 namespace FitnessApp.SettingsApi.Data
 {
-    public class SettingsRepository<BaseEntity, Model, CreateModel, UpdateModel> 
-        : GenericRepository<BaseEntity, Model, CreateModel, UpdateModel>
-        , ISettingsRepository<BaseEntity, Model, CreateModel, UpdateModel>
-        where BaseEntity : IEntity
-        where Model : ISearchableModel
-        where CreateModel : ICreateModel
-        where UpdateModel : IUpdateModel
+    public class SettingsRepository
+        : GenericRepository<SettingsGenericEntity, SettingsGenericModel, CreateSettingsGenericModel, UpdateSettingsGenericModel>,
+        ISettingsRepository
     {
-        public SettingsRepository
-        (
-            IOptions<MongoDbSettings> settings, 
-            IJsonMapper mapper, 
-            ILogger<SettingsRepository<BaseEntity, Model, CreateModel, UpdateModel>> log
-        )
-            : base(settings, mapper, log)
-        {
-            
-        }
-     }
+        public SettingsRepository(
+            IDbContext<SettingsGenericEntity> dbContext,
+            IMapper mapper
+        ) : base(dbContext, mapper)
+        { }
+    }
 }

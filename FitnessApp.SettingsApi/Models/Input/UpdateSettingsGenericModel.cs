@@ -1,12 +1,10 @@
-﻿using FitnessApp.SettingsApi.Enums;
-using FitnessApp.Abstractions.Db.Entities.Base;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using FitnessApp.Common.Abstractions.Models.Generic;
+using FitnessApp.SettingsApi.Enums;
 
-namespace FitnessApp.SettingsApi.Data.Entities
+namespace FitnessApp.SettingsApi.Models.Input
 {
-    public class Settings : IEntity
+    public class UpdateSettingsGenericModel : IUpdateGenericModel
     {
-        [BsonId]
         public string UserId { get; set; }
         public PrivacyType CanFollow { get; set; }
         public PrivacyType CanViewFollowers { get; set; }
@@ -15,10 +13,5 @@ namespace FitnessApp.SettingsApi.Data.Entities
         public PrivacyType CanViewExercises { get; set; }
         public PrivacyType CanViewJournal { get; set; }
         public PrivacyType CanViewProgress { get; set; }
-
-        public bool Matches(string search)
-        {
-            return true;
-        }
     }
 }

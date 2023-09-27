@@ -1,9 +1,9 @@
-﻿using FitnessApp.Abstractions.Models.Base;
+﻿using FitnessApp.Common.Abstractions.Models.Generic;
 using FitnessApp.SettingsApi.Enums;
 
 namespace FitnessApp.SettingsApi.Models.Output
 {
-    public class SettingsModel : ISearchableModel
+    public class SettingsGenericModel : IGenericModel
     {
         public string Id { get; set; }
         public string UserId { get; set; }
@@ -14,10 +14,5 @@ namespace FitnessApp.SettingsApi.Models.Output
         public PrivacyType CanViewExercises { get; set; }
         public PrivacyType CanViewJournal { get; set; }
         public PrivacyType CanViewProgress { get; set; }
-
-        public bool Matches(string search)
-        {
-            return true;
-        }
     }
 }

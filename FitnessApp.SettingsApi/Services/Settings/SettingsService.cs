@@ -1,29 +1,42 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Threading.Tasks;
+using AutoMapper;
+using FitnessApp.Common.Abstractions.Services.Generic;
 using FitnessApp.SettingsApi.Data;
-using FitnessApp.Abstractions.Services.Base;
-using FitnessApp.Abstractions.Db.Entities.Base;
-using FitnessApp.Abstractions.Models.Base;
-using FitnessApp.Abstractions.Services.Cache;
+using FitnessApp.SettingsApi.Data.Entities;
+using FitnessApp.SettingsApi.Models.Input;
+using FitnessApp.SettingsApi.Models.Output;
 
 namespace FitnessApp.SettingsApi.Services.Settings
 {
-    public class SettingsService<Entity, Model, GetItemsModel, CreateModel, UpdateModel>
-        : GenericService<Entity, Model, GetItemsModel, CreateModel, UpdateModel>
-        , ISettingsService<Entity, Model, GetItemsModel, CreateModel, UpdateModel>
-        where Entity : IEntity
-        where Model : ISearchableModel
-        where GetItemsModel : IGetItemsModel
-        where CreateModel : ICreateModel
-        where UpdateModel : IUpdateModel
-    {        
-        public SettingsService
-        (
-            ISettingsRepository<Entity, Model, CreateModel, UpdateModel> repository, 
-            ICacheService<Model> cacheService,
-            ILogger<SettingsService<Entity, Model, GetItemsModel, CreateModel, UpdateModel>> log
-        )
-            : base(repository, cacheService, log)
+    public class SettingsService
+        : GenericService<SettingsGenericEntity, SettingsGenericModel, CreateSettingsGenericModel, UpdateSettingsGenericModel>,
+        ISettingsService
+    {
+        public SettingsService(
+            ISettingsRepository repository,
+            IMapper mapper
+        ) : base(repository, mapper)
         {
+        }
+
+        public Task<SettingsGenericModel> GetSettingsByUserId(string userId)
+        {
+            return GetItemByUserId(userId);
+        }
+
+        public Task<SettingsGenericModel> CreateSettings(CreateSettingsGenericModel model)
+        {
+            return CreateItem(model);
+        }
+
+        public Task<SettingsGenericModel> UpdateSettings(UpdateSettingsGenericModel model)
+        {
+            return UpdateItem(model);
+        }
+
+        public Task<string> DeleteSettings(string userId)
+        {
+            return DeleteItem(userId);
         }
     }
 }
