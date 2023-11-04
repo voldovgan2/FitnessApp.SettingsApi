@@ -20,11 +20,14 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
       -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
+          args: |
+            PAT=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            
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
