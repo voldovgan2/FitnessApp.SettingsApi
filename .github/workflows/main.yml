@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          args: |
+          build-args: |
             PAT=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            
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
