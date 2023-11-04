@@ -1,9 +1,8 @@
 ﻿using System;
 using FitnessApp.Common.Serializer.JsonSerializer;
-using FitnessApp.ServiceBus.AzureServiceBus.TopicSubscribers;
+using FitnessApp.Common.ServiceBus.Nats.Services;
 using FitnessApp.SettingsApi.Services.MessageBus;
 using FitnessApp.SettingsApi.Services.Settings;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FitnessApp.SettingsApi.DependencyInjection
@@ -14,14 +13,12 @@ namespace FitnessApp.SettingsApi.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddTransient<ITopicSubscribers, SettingsMessageTopicSubscribersService>(
+            services.AddTransient(
                 sp =>
                 {
-                    var configuration = sp.GetRequiredService<IConfiguration>();
-                    var subscription = configuration.GetValue<string>("ServiceBusSubscriptionName");
                     return new SettingsMessageTopicSubscribersService(
+                        sp.GetRequiredService<IServiceBus>(),
                         sp.GetRequiredService<ISettingsService>().CreateSettings,
-                        subscription,
                         sp.GetRequiredService<IJsonSerializer>()
                     );
                 }

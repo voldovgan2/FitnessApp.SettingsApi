@@ -10,7 +10,9 @@ namespace FitnessApp.SettingsApi.Middleware
 {
     public class ErrorHandlerMiddleware : AbstractErrorHandlerMiddleware
     {
-        public ErrorHandlerMiddleware(RequestDelegate next, IJsonSerializer serializer)
+        public ErrorHandlerMiddleware(
+            RequestDelegate next,
+            IJsonSerializer serializer)
             : base(next, serializer) { }
 
         protected override Task HandleGlobalError(HttpContext context, Exception error)

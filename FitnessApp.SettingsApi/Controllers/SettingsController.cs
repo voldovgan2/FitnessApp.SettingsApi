@@ -5,6 +5,7 @@ using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Contracts.Output;
 using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Services.Settings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessApp.SettingsApi.Controllers
@@ -13,7 +14,7 @@ namespace FitnessApp.SettingsApi.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
 
-    // [Authorize]
+    [Authorize]
     public class SettingsController : Controller
     {
         private readonly ISettingsService _settingsService;

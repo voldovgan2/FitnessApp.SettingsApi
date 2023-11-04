@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using FitnessApp.SettingsApi.Models.Input;
+using FitnessApp.SettingsApi.Services.Settings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FitnessApp.SettingsApi.Data
@@ -14,24 +15,21 @@ namespace FitnessApp.SettingsApi.Data
             using (var scope = serviceProvider.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var repository = services.GetRequiredService<ISettingsRepository>();
-                for (int k = 0; k < 200; k++)
+                var service = services.GetRequiredService<ISettingsService>();
+                for (int k = 0; k < 20; k++)
                 {
                     var userEmail = $"user{k}@hotmail.com";
                     var userId = $"ApplicationUser_{userEmail}";
-                    var settings = await repository.GetItemByUserId(userId);
-                    if (settings == null)
-                    {
-                        await repository.CreateItem(CreateSettingsGenericModel.Default(userId));
-                    }
+                    await service.DeleteSettings(userId);
+                    await service.CreateSettings(CreateSettingsGenericModel.Default(userId));
                 }
 
                 var adminEmail = "admin@hotmail.com";
                 var adminId = $"ApplicationUser_{adminEmail}";
-                var adminSettings = await repository.GetItemByUserId(adminId);
+                var adminSettings = await service.GetSettingsByUserId(adminId);
                 if (adminSettings == null)
                 {
-                    await repository.CreateItem(CreateSettingsGenericModel.Default(adminId));
+                    await service.CreateSettings(CreateSettingsGenericModel.Default(adminId));
                 }
             }
         }
