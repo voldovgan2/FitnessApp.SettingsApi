@@ -26,6 +26,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile           
+          file: ./Dockerfile  
+          build-args: |
+            NUGET_PAT=${{ secrets.PACKAGE_SOURCE_PASSWORD }}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/clockbox:latest
