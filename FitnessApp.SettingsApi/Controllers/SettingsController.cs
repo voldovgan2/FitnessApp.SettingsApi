@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Contracts.Output;
@@ -27,63 +26,36 @@ namespace FitnessApp.SettingsApi.Controllers
         }
 
         [HttpGet("GetSettings/{userId}")]
-        public async Task<IActionResult> GetSettings([FromRoute] string userId)
+        public async Task<SettingsContract> GetSettings([FromRoute] string userId)
         {
             if (nameof(SettingsController).Length > 0)
-                return Ok(new SettingsContract { CanFollow = Enums.PrivacyType.Followers });
+                return new SettingsContract { CanFollow = Enums.PrivacyType.Followers };
 
             var response = await _settingsService.GetSettingsByUserId(userId);
-            if (response != null)
-            {
-                var result = _mapper.Map<SettingsContract>(response);
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            return _mapper.Map<SettingsContract>(response);
         }
 
         [HttpPost("CreateSettings")]
-        public async Task<IActionResult> CreateSettings([FromBody]CreateSettingsContract contract)
+        public async Task<SettingsContract> CreateSettings([FromBody]CreateSettingsContract contract)
         {
             var model = _mapper.Map<CreateSettingsGenericModel>(contract);
-            var created = await _settingsService.CreateSettings(model);
-            if (created != null)
-            {
-                var result = _mapper.Map<SettingsContract>(created);
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var response = await _settingsService.CreateSettings(model);
+            return _mapper.Map<SettingsContract>(response);
         }
 
         [HttpPut("UpdateSettings")]
-        public async Task<IActionResult> UpdateSettings([FromBody]UpdateSettingsContract contract)
+        public async Task<SettingsContract> UpdateSettings([FromBody]UpdateSettingsContract contract)
         {
             var model = _mapper.Map<UpdateSettingsGenericModel>(contract);
-            var updated = await _settingsService.UpdateSettings(model);
-            if (updated != null)
-            {
-                var result = _mapper.Map<SettingsContract>(updated);
-                return Ok(result);
-            }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError);
-            }
+            var response = await _settingsService.UpdateSettings(model);
+            return _mapper.Map<SettingsContract>(response);
         }
 
         [HttpDelete("DeleteSettings/{userId}")]
-        public async Task<IActionResult> DeleteSettings([FromRoute] string userId)
+        public async Task<string> DeleteSettings([FromRoute] string userId)
         {
-            var deleted = await _settingsService.DeleteSettings(userId);
-            if (deleted != null)
-                return Ok(deleted);
-            else
-                return StatusCode((int)HttpStatusCode.InternalServerError);
+            var response = await _settingsService.DeleteSettings(userId);
+            return response;
         }
     }
 }

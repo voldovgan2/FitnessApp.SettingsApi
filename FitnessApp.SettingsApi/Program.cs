@@ -50,7 +50,7 @@ builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("Mo
 
 builder.Services.Configure<ServiceBusSettings>(builder.Configuration.GetSection("ServiceBus"));
 
-builder.Services.ConfigureMongoClient(builder.Configuration);
+builder.Services.ConfigureMongoClient();
 
 builder.Services.AddTransient<IDbContext<SettingsGenericEntity>, DbContext<SettingsGenericEntity>>();
 
@@ -75,7 +75,8 @@ builder.Host.ConfigureAppConfiguration();
 
 if ("test".Length == 0)
 {
-    builder.Services.AddHealthChecks()
+    builder.Services
+        .AddHealthChecks()
         .AddMongoDb(builder.Configuration.GetValue<string>("MongoConnection:ConnectionString"), name: "MongoDb")
         .AddNats((options) =>
         {
@@ -84,11 +85,11 @@ if ("test".Length == 0)
         .AddCheck<SavaTestHealthCheck>(nameof(SavaTestHealthCheck));
 
     builder.Services
-    .AddHealthChecksUI(options =>
-    {
-        options.AddHealthCheckEndpoint("Healthcheck API", "/healthcheck");
-    })
-    .AddInMemoryStorage();
+        .AddHealthChecksUI(options =>
+        {
+            options.AddHealthCheckEndpoint("Healthcheck API", "/healthcheck");
+        })
+        .AddInMemoryStorage();
 
     builder.Services.AddSingleton<SavaTestHealthCheck>();
 }
