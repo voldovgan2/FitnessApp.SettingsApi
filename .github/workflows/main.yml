@@ -1,4 +1,4 @@
-name: BuildFitnessApp.SettingsApi image
+name: Build FitnessApp.SettingsApi image
 
 on:
   push:
