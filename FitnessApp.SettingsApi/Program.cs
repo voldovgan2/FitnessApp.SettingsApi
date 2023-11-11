@@ -7,6 +7,7 @@ using FitnessApp.Common.Configuration.Identity;
 using FitnessApp.Common.Configuration.Mongo;
 using FitnessApp.Common.Configuration.Nats;
 using FitnessApp.Common.Configuration.Swagger;
+using FitnessApp.Common.Configuration.Vault;
 using FitnessApp.Common.Middleware;
 using FitnessApp.Common.Serializer.JsonSerializer;
 using FitnessApp.Common.ServiceBus.Nats.Services;
@@ -51,6 +52,8 @@ builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("Mo
 builder.Services.Configure<ServiceBusSettings>(builder.Configuration.GetSection("ServiceBus"));
 
 builder.Services.ConfigureMongoClient();
+
+builder.Services.AddVaultClient(builder.Configuration);
 
 builder.Services.AddTransient<IDbContext<SettingsGenericEntity>, DbContext<SettingsGenericEntity>>();
 
