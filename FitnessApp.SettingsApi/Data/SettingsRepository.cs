@@ -7,14 +7,16 @@ using FitnessApp.SettingsApi.Models.Output;
 
 namespace FitnessApp.SettingsApi.Data
 {
-    public class SettingsRepository
-        : GenericRepository<SettingsGenericEntity, SettingsGenericModel, CreateSettingsGenericModel, UpdateSettingsGenericModel>,
+    public class SettingsRepository(
+        IDbContext<SettingsGenericEntity> dbContext,
+        IMapper mapper
+        )
+        : GenericRepository<
+            SettingsGenericEntity,
+            SettingsGenericModel,
+            CreateSettingsGenericModel,
+            UpdateSettingsGenericModel>(dbContext, mapper),
         ISettingsRepository
     {
-        public SettingsRepository(
-            IDbContext<SettingsGenericEntity> dbContext,
-            IMapper mapper
-        ) : base(dbContext, mapper)
-        { }
     }
 }

@@ -1,20 +1,10 @@
 ﻿using System.Reflection;
-using AutoMapper;
-using FitnessApp.Common.Abstractions.Db.Configuration;
-using FitnessApp.Common.Abstractions.Db.DbContext;
-using FitnessApp.Common.Configuration.AppConfiguration;
-using FitnessApp.Common.Configuration.Identity;
-using FitnessApp.Common.Configuration.Mongo;
-using FitnessApp.Common.Configuration.Nats;
-using FitnessApp.Common.Configuration.Swagger;
-using FitnessApp.Common.Configuration.Vault;
+using FitnessApp.Common.Configuration;
 using FitnessApp.Common.Middleware;
 using FitnessApp.Common.Serializer.JsonSerializer;
-using FitnessApp.Common.ServiceBus.Nats.Services;
 using FitnessApp.SettingsApi;
 using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Data;
-using FitnessApp.SettingsApi.Data.Entities;
 using FitnessApp.SettingsApi.DependencyInjection;
 using FitnessApp.SettingsApi.Middleware;
 using FitnessApp.SettingsApi.Services.MessageBus;
@@ -28,7 +18,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NATS.Client;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,41 +27,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<CreateSettingsContract>, CreateSettingsContractValidator>();
 
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new MappingProfile());
-});
-IMapper mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
-
+builder.Services.ConfigureMapper(new MappingProfile());
 builder.Services.AddTransient<IJsonSerializer, JsonSerializer>();
-
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoConnection"));
-
-builder.Services.Configure<ServiceBusSettings>(builder.Configuration.GetSection("ServiceBus"));
-
-builder.Services.ConfigureMongoClient();
-
-builder.Services.AddVaultClient(builder.Configuration);
-
-builder.Services.AddTransient<IDbContext<SettingsGenericEntity>, DbContext<SettingsGenericEntity>>();
-
-builder.Services.AddTransient<ISettingsRepository, SettingsRepository>();
-
-builder.Services.AddTransient<IConnectionFactory, ConnectionFactory>();
-
-builder.Services.AddTransient<ISettingsService, SettingsService>();
-
-builder.Services.AddSingleton<IServiceBus, ServiceBus>();
-
+builder.Services.ConfigureMongo(builder.Configuration);
+builder.Services.ConfigureVault(builder.Configuration);
+builder.Services.ConfigureSettingsRepository();
+builder.Services.ConfigureNats(builder.Configuration);
 builder.Services.AddSettingsMessageTopicSubscribersService();
-
+builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.ConfigureSwagger(Assembly.GetExecutingAssembly().GetName().Name);
+builder.Services.AddTransient<ISettingsService, SettingsService>();
 if ("false".Contains("true"))
     builder.Services.AddHostedService<SettingsMessageTopicSubscribersService>();
-
-builder.Services.ConfigureAuthentication(builder.Configuration);
-
-builder.Services.ConfigureSwaggerConfiguration(Assembly.GetExecutingAssembly().GetName().Name);
 
 builder.Host.ConfigureAppConfiguration();
 
@@ -80,7 +46,6 @@ if ("test".Length == 0)
 {
     builder.Services
         .AddHealthChecks()
-        .AddMongoDb(builder.Configuration.GetValue<string>("MongoConnection:ConnectionString"), name: "MongoDb")
         .AddNats((options) =>
         {
             options.Url = builder.Configuration.GetValue<string>("ServiceBus:ConnectionString");
@@ -103,23 +68,14 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger XML Api Demo v1");
-    });
+    app.UseSwaggerAndUi();
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.UseMiddleware<ErrorHandlerMiddleware>();
-
 app.UseMiddleware<CorrelationIdHeaderMiddleware>();
-
 app.MapControllers();
 
 if ("test".Length == 0)

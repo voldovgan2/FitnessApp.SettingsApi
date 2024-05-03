@@ -8,17 +8,14 @@ using FitnessApp.SettingsApi.Models.Output;
 
 namespace FitnessApp.SettingsApi.Services.Settings
 {
-    public class SettingsService
-        : GenericService<SettingsGenericEntity, SettingsGenericModel, CreateSettingsGenericModel, UpdateSettingsGenericModel>,
+    public class SettingsService(ISettingsRepository repository, IMapper mapper)
+        : GenericService<
+            SettingsGenericEntity,
+            SettingsGenericModel,
+            CreateSettingsGenericModel,
+            UpdateSettingsGenericModel>(repository, mapper),
         ISettingsService
     {
-        public SettingsService(
-            ISettingsRepository repository,
-            IMapper mapper
-        ) : base(repository, mapper)
-        {
-        }
-
         public Task<SettingsGenericModel> GetSettingsByUserId(string userId)
         {
             return GetItemByUserId(userId);

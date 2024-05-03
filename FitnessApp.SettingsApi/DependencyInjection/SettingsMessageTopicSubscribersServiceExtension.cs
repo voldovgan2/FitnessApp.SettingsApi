@@ -11,7 +11,7 @@ namespace FitnessApp.SettingsApi.DependencyInjection
     {
         public static IServiceCollection AddSettingsMessageTopicSubscribersService(this IServiceCollection services)
         {
-            if (services == null) throw new ArgumentNullException(nameof(services));
+            ArgumentNullException.ThrowIfNull(services);
 
             services.AddTransient(
                 sp =>

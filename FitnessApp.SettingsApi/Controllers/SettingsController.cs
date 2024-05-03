@@ -14,47 +14,38 @@ namespace FitnessApp.SettingsApi.Controllers
     [Produces("application/json")]
 
     [Authorize]
-    public class SettingsController : Controller
+    public class SettingsController(ISettingsService settingsService, IMapper mapper) : Controller
     {
-        private readonly ISettingsService _settingsService;
-        private readonly IMapper _mapper;
-
-        public SettingsController(ISettingsService settingsService, IMapper mapper)
-        {
-            _settingsService = settingsService;
-            _mapper = mapper;
-        }
-
         [HttpGet("GetSettings/{userId}")]
         public async Task<SettingsContract> GetSettings([FromRoute] string userId)
         {
             if (nameof(SettingsController).Length > 0)
                 return new SettingsContract { CanFollow = Enums.PrivacyType.Followers };
 
-            var response = await _settingsService.GetSettingsByUserId(userId);
-            return _mapper.Map<SettingsContract>(response);
+            var response = await settingsService.GetSettingsByUserId(userId);
+            return mapper.Map<SettingsContract>(response);
         }
 
         [HttpPost("CreateSettings")]
         public async Task<SettingsContract> CreateSettings([FromBody]CreateSettingsContract contract)
         {
-            var model = _mapper.Map<CreateSettingsGenericModel>(contract);
-            var response = await _settingsService.CreateSettings(model);
-            return _mapper.Map<SettingsContract>(response);
+            var model = mapper.Map<CreateSettingsGenericModel>(contract);
+            var response = await settingsService.CreateSettings(model);
+            return mapper.Map<SettingsContract>(response);
         }
 
         [HttpPut("UpdateSettings")]
         public async Task<SettingsContract> UpdateSettings([FromBody]UpdateSettingsContract contract)
         {
-            var model = _mapper.Map<UpdateSettingsGenericModel>(contract);
-            var response = await _settingsService.UpdateSettings(model);
-            return _mapper.Map<SettingsContract>(response);
+            var model = mapper.Map<UpdateSettingsGenericModel>(contract);
+            var response = await settingsService.UpdateSettings(model);
+            return mapper.Map<SettingsContract>(response);
         }
 
         [HttpDelete("DeleteSettings/{userId}")]
         public async Task<string> DeleteSettings([FromRoute] string userId)
         {
-            var response = await _settingsService.DeleteSettings(userId);
+            var response = await settingsService.DeleteSettings(userId);
             return response;
         }
     }

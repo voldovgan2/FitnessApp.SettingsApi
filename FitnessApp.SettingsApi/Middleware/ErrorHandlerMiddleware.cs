@@ -9,13 +9,8 @@ using Minio.Exceptions;
 
 namespace FitnessApp.SettingsApi.Middleware
 {
-    public class ErrorHandlerMiddleware : AbstractErrorHandlerMiddleware
+    public class ErrorHandlerMiddleware(RequestDelegate next, IJsonSerializer serializer) : AbstractErrorHandlerMiddleware(next, serializer)
     {
-        public ErrorHandlerMiddleware(
-            RequestDelegate next,
-            IJsonSerializer serializer)
-            : base(next, serializer) { }
-
         protected override Task HandleGlobalError(HttpContext context, Exception error)
         {
             return Task.CompletedTask;
