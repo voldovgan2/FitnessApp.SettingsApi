@@ -62,6 +62,13 @@ if ("test".Length == 0)
     builder.Services.AddSingleton<SavaTestHealthCheck>();
 }
 
+using var log = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("./logs.txt")
+    .CreateLogger();
+
+builder.Services.AddSingleton<ILogger>(log);
+
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
 
 var app = builder.Build();
