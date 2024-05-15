@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using FitnessApp.Common.Configuration;
 using FitnessApp.Common.Middleware;
 using FitnessApp.Common.Serializer.JsonSerializer;
@@ -13,11 +15,15 @@ using FitnessApp.SettingsApi.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,7 +40,46 @@ builder.Services.ConfigureVault(builder.Configuration);
 builder.Services.ConfigureSettingsRepository();
 builder.Services.ConfigureNats(builder.Configuration);
 builder.Services.AddSettingsMessageTopicSubscribersService();
-builder.Services.ConfigureAuthentication(builder.Configuration);
+if ("false".Contains("true"))
+{
+    builder.Services.ConfigureAuthentication(builder.Configuration);
+}
+else
+{
+    builder.Services.AddAuthentication(delegate(AuthenticationOptions opts)
+    {
+        opts.DefaultAuthenticateScheme = "Bearer";
+        opts.DefaultScheme = "Bearer";
+        opts.DefaultChallengeScheme = "Bearer";
+    }).AddJwtBearer(delegate(JwtBearerOptions cfg)
+    {
+        cfg.RequireHttpsMetadata = false;
+        cfg.Authority = builder.Configuration["OpenIdConnect:Issuer"];
+        cfg.Audience = builder.Configuration["OpenIdConnect:Audience"];
+        cfg.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                {
+                    context.Response.Headers.Append("Token-Expired", "true");
+                }
+
+                return Task.CompletedTask;
+            },
+            OnMessageReceived = context =>
+            {
+                if (context.Token.Length == 0)
+                {
+                    context.Response.Headers.Append("Token-Expired", "true");
+                }
+
+                return Task.CompletedTask;
+            }
+        };
+    });
+}
+
 builder.Services.ConfigureSwagger(Assembly.GetExecutingAssembly().GetName().Name);
 builder.Services.AddTransient<ISettingsService, SettingsService>();
 if ("false".Contains("true"))
@@ -65,9 +110,6 @@ if ("test".Length == 0)
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console());
 
 var app = builder.Build();
-var logger = app.Services.GetRequiredService<ILogger>();
-logger.Information($"OpenIdConnect:Issuer: {builder.Configuration["OpenIdConnect:Issuer"]}");
-logger.Information($"OpenIdConnect:Audience: {builder.Configuration["OpenIdConnect:Audience"]}");
 
 if (app.Environment.IsDevelopment())
 {
@@ -75,7 +117,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseMiddleware<RequestResponseLoggingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ErrorHandlerMiddleware>();
