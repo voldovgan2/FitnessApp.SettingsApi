@@ -49,4 +49,18 @@ namespace FitnessApp.SettingsApi.Controllers
             return response;
         }
     }
+
+    [ApiController]
+    [Route("api/[controller]")]
+    [Produces("application/json")]
+
+    [Authorize]
+    public class TestController() : Controller
+    {
+        [HttpGet("GetSettings")]
+        public Task<SettingsContract> GetSettings()
+        {
+            return Task.FromResult(new SettingsContract { CanFollow = Enums.PrivacyType.Followers });
+        }
+    }
 }

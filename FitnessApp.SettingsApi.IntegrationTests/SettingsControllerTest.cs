@@ -1,9 +1,13 @@
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FitnessApp.SettingsApi.Contracts.Input;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using VaultSharp;
 using Xunit;
 
 namespace FitnessApp.SettingsApi.IntegrationTests
@@ -14,6 +18,20 @@ namespace FitnessApp.SettingsApi.IntegrationTests
 
         public SettingsControllerTest(TestWebApplicationFactory factory)
         {
+            var data = new Dictionary<string, object>
+            {
+                { "Minio:SecretKey", "minio_password" }
+            };
+            if (data.Count == 2)
+            {
+                using var scope = factory.Services.CreateScope();
+                var vaultClient = scope.ServiceProvider.GetRequiredService<IVaultClient>();
+                vaultClient.V1.Secrets.KeyValue.V1.WriteSecretAsync("fitness-app", data).GetAwaiter().GetResult();
+                var savaTest = vaultClient.V1.Secrets.KeyValue.V1.ReadSecretAsync("fitness-app").GetAwaiter().GetResult();
+                var key = "Minio:SecretKey";
+                Debug.WriteLine($"savaTest: {savaTest.Data[key]}");
+            }
+
             _httpClient = factory
                 .CreateClient(new WebApplicationFactoryClientOptions
                 {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using VaultSharp;
 
 namespace FitnessApp.SettingsApi.IntegrationTests
 {
@@ -15,6 +16,8 @@ namespace FitnessApp.SettingsApi.IntegrationTests
             builder
                 .ConfigureServices((ctx, services) =>
                 {
+                    // it is better to inject in memory db and test DI for the whole flow
+                    // here we used service mock because we use cutom Mongo version and thus in memory implementation doesn't work
                     var settingsServiceDescriptor = services.SingleOrDefault(s => s.ServiceType == typeof(ISettingsService));
                     services.Remove(settingsServiceDescriptor);
                     services.AddTransient<ISettingsService, SettingsServiceMock>();

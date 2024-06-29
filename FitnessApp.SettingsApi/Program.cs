@@ -15,7 +15,6 @@ using FitnessApp.SettingsApi.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -46,16 +45,18 @@ if ("false".Contains("true"))
 }
 else
 {
-    builder.Services.AddAuthentication(delegate(AuthenticationOptions opts)
-    {
-        opts.DefaultAuthenticateScheme = "Bearer";
-        opts.DefaultScheme = "Bearer";
-        opts.DefaultChallengeScheme = "Bearer";
-    }).AddJwtBearer(delegate(JwtBearerOptions cfg)
+    builder.Services
+        .AddAuthentication("Bearer")
+        .AddJwtBearer(cfg =>
     {
         cfg.RequireHttpsMetadata = false;
         cfg.Authority = builder.Configuration["OpenIdConnect:Issuer"];
         cfg.Audience = builder.Configuration["OpenIdConnect:Audience"];
+        cfg.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidAudience = builder.Configuration["OpenIdConnect:Audience"],
+            ValidIssuer = builder.Configuration["OpenIdConnect:Issuer"]
+        };
         cfg.Events = new JwtBearerEvents
         {
             OnAuthenticationFailed = context =>
