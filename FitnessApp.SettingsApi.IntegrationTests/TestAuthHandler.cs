@@ -15,8 +15,8 @@ namespace FitnessApp.SettingsApi.IntegrationTests
     {
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var claims = new[] { new Claim(ClaimTypes.Name, "svTest") };
-            var identity = new ClaimsIdentity(claims, "svTest");
+            var claims = new[] { new Claim(ClaimTypes.Name, AuthConstants.SvTest) };
+            var identity = new ClaimsIdentity(claims, AuthConstants.SvTest);
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, AuthConstants.Scheme);
             var result = AuthenticateResult.Success(ticket);
