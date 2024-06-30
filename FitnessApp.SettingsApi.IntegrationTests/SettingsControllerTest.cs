@@ -30,13 +30,13 @@ namespace FitnessApp.SettingsApi.IntegrationTests
                         services.RemoveAll<IMongoClient>();
                         services.AddSingleton<IMongoClient>((_) => _fixture.Client);
                         services
-                            .AddAuthentication(defaultScheme: "TestScheme")
-                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });
+                            .AddAuthentication(defaultScheme: AuthConstants.Scheme)
+                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(AuthConstants.Scheme, options => { });
                     })
                     .UseEnvironment("Development");
                 });
             _httpClient = appFactory.CreateClient();
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme: "TestScheme");
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme: AuthConstants.Scheme);
         }
 
         [Fact]

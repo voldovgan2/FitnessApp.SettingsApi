@@ -15,10 +15,10 @@ namespace FitnessApp.SettingsApi.IntegrationTests
     {
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var claims = new[] { new Claim(ClaimTypes.Name, "Test user") };
-            var identity = new ClaimsIdentity(claims, "Test");
+            var claims = new[] { new Claim(ClaimTypes.Name, "svTest") };
+            var identity = new ClaimsIdentity(claims, "svTest");
             var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, "TestScheme");
+            var ticket = new AuthenticationTicket(principal, AuthConstants.Scheme);
             var result = AuthenticateResult.Success(ticket);
             return Task.FromResult(result);
         }
