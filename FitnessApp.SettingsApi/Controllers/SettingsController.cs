@@ -19,9 +19,6 @@ namespace FitnessApp.SettingsApi.Controllers
         [HttpGet("GetSettings/{userId}")]
         public async Task<SettingsContract> GetSettings([FromRoute] string userId)
         {
-            if (nameof(SettingsController).Length > 0)
-                return new SettingsContract { CanFollow = Enums.PrivacyType.Followers };
-
             var response = await settingsService.GetSettingsByUserId(userId);
             return mapper.Map<SettingsContract>(response);
         }
