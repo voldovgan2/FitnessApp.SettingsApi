@@ -31,7 +31,7 @@ namespace FitnessApp.SettingsApi.IntegrationTests
                         services.AddSingleton<IMongoClient>((_) => _fixture.Client);
                         services
                             .AddAuthentication(defaultScheme: AuthConstants.Scheme)
-                            .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(AuthConstants.Scheme, options => { });
+                            .AddScheme<AuthenticationSchemeOptions, MockAuthHandler>(AuthConstants.Scheme, options => { });
                     })
                     .UseEnvironment("Development");
                 });

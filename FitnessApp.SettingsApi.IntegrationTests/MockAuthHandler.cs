@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace FitnessApp.SettingsApi.IntegrationTests
 {
-    public class TestAuthHandler(
+    public class MockAuthHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder)
