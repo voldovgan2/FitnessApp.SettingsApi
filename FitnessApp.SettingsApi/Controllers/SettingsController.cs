@@ -51,13 +51,19 @@ namespace FitnessApp.SettingsApi.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
 
-    [Authorize]
     public class TestController() : Controller
     {
         [HttpGet("GetSettings")]
         public Task<SettingsContract> GetSettings()
         {
             return Task.FromResult(new SettingsContract { CanFollow = Enums.PrivacyType.Followers });
+        }
+
+        [HttpDelete("DeleteSettings")]
+        public Task<string> DeleteSettings()
+        {
+            var response = "svTest";
+            return Task.FromResult(response);
         }
     }
 }

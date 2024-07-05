@@ -67,15 +67,6 @@ else
                 }
 
                 return Task.CompletedTask;
-            },
-            OnMessageReceived = context =>
-            {
-                if (context.Token.Length == 0)
-                {
-                    context.Response.Headers.Append("Token-Expired", "true");
-                }
-
-                return Task.CompletedTask;
             }
         };
     });
