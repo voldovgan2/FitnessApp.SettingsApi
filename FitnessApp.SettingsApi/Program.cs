@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using FitnessApp.Common.Configuration;
 using FitnessApp.Common.Middleware;
-using FitnessApp.Common.Serializer.JsonSerializer;
 using FitnessApp.SettingsApi;
 using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Data;
@@ -28,7 +27,6 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<CreateSettingsContract>, CreateSettingsContractValidator>();
 
 builder.Services.ConfigureMapper(new MappingProfile());
-builder.Services.AddTransient<IJsonSerializer, JsonSerializer>();
 builder.Services.ConfigureMongo(builder.Configuration);
 builder.Services.ConfigureVault(builder.Configuration);
 builder.Services.ConfigureSettingsRepository();

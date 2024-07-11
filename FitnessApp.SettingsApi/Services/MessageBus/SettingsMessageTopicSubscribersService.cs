@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using FitnessApp.Common.Serializer.JsonSerializer;
 using FitnessApp.Common.ServiceBus;
 using FitnessApp.Common.ServiceBus.Nats.Services;
 using FitnessApp.SettingsApi.Models.Input;
@@ -10,7 +9,6 @@ namespace FitnessApp.SettingsApi.Services.MessageBus
 {
     public class SettingsMessageTopicSubscribersService(
         IServiceBus serviceBus,
-        Func<CreateSettingsGenericModel, Task<SettingsGenericModel>> createItemMethod,
-        IJsonSerializer serializer
-        ) : GenericServiceNewUserRegisteredSubscriberService<SettingsGenericModel, CreateSettingsGenericModel>(serviceBus, createItemMethod, serializer);
+        Func<CreateSettingsGenericModel, Task<SettingsGenericModel>> createItemMethod)
+        : GenericServiceNewUserRegisteredSubscriberService<SettingsGenericModel, CreateSettingsGenericModel>(serviceBus, createItemMethod);
 }

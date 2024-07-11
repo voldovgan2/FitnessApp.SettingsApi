@@ -1,5 +1,4 @@
 ﻿using System;
-using FitnessApp.Common.Serializer.JsonSerializer;
 using FitnessApp.Common.ServiceBus.Nats.Services;
 using FitnessApp.SettingsApi.Services.MessageBus;
 using FitnessApp.SettingsApi.Services.Settings;
@@ -18,9 +17,7 @@ namespace FitnessApp.SettingsApi.DependencyInjection
                 {
                     return new SettingsMessageTopicSubscribersService(
                         sp.GetRequiredService<IServiceBus>(),
-                        sp.GetRequiredService<ISettingsService>().CreateSettings,
-                        sp.GetRequiredService<IJsonSerializer>()
-                    );
+                        sp.GetRequiredService<ISettingsService>().CreateSettings);
                 }
             );
 
