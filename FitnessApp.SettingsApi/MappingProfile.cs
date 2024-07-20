@@ -5,30 +5,29 @@ using FitnessApp.SettingsApi.Data.Entities;
 using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Models.Output;
 
-namespace FitnessApp.SettingsApi
+namespace FitnessApp.SettingsApi;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            #region Contract 2 GenericModel
-            CreateMap<CreateSettingsContract, CreateSettingsGenericModel>();
-            CreateMap<UpdateSettingsContract, UpdateSettingsGenericModel>();
-            #endregion
+        #region Contract 2 GenericModel
+        CreateMap<CreateSettingsContract, CreateSettingsGenericModel>();
+        CreateMap<UpdateSettingsContract, UpdateSettingsGenericModel>();
+        #endregion
 
-            #region GenericModel 2 GenericEntity
-            CreateMap<SettingsGenericModel, SettingsGenericEntity>();
-            CreateMap<CreateSettingsGenericModel, SettingsGenericEntity>();
-            CreateMap<UpdateSettingsGenericModel, SettingsGenericEntity>();
-            #endregion
+        #region GenericModel 2 GenericEntity
+        CreateMap<SettingsGenericModel, SettingsGenericEntity>();
+        CreateMap<CreateSettingsGenericModel, SettingsGenericEntity>();
+        CreateMap<UpdateSettingsGenericModel, SettingsGenericEntity>();
+        #endregion
 
-            #region GenericEntity 2 GenericModel
-            CreateMap<SettingsGenericEntity, SettingsGenericModel>();
-            #endregion
+        #region GenericEntity 2 GenericModel
+        CreateMap<SettingsGenericEntity, SettingsGenericModel>();
+        #endregion
 
-            #region GenericModel 2 Contract
-            CreateMap<SettingsGenericModel, SettingsContract>();
-            #endregion
-        }
+        #region GenericModel 2 Contract
+        CreateMap<SettingsGenericModel, SettingsContract>();
+        #endregion
     }
 }
