@@ -9,58 +9,57 @@ using Microsoft.Extensions.Options;
 using Mongo2Go;
 using MongoDB.Driver;
 
-namespace FitnessApp.SettingsApi.IntegrationTests
+namespace FitnessApp.SettingsApi.IntegrationTests;
+
+public class MongoDbFixture : IDisposable
 {
-    public class MongoDbFixture : IDisposable
+    private readonly MongoDbRunner _runner;
+    public MongoClient Client { get; }
+
+    public MongoDbFixture()
     {
-        private readonly MongoDbRunner _runner;
-        public MongoClient Client { get; }
+        _runner = MongoDbRunner.Start();
+        Client = new MongoClient(_runner.ConnectionString);
+        CreateMockData().GetAwaiter().GetResult();
+    }
 
-        public MongoDbFixture()
+    private async Task CreateMockData()
+    {
+        var mongoDbSettings = new MongoDbSettings
         {
-            _runner = MongoDbRunner.Start();
-            Client = new MongoClient(_runner.ConnectionString);
-            CreateMockData().GetAwaiter().GetResult();
-        }
+            DatabaseName = "FitnessSettings",
+            CollecttionName = "Settings",
+        };
+        var dbContext = new DbContext<SettingsGenericEntity>(Client, Options.Create(mongoDbSettings));
+        IEnumerable<string> itemIds =
+        [
+            "EntityIdToGet",
+            "EntityIdToDelete",
+            "EntityIdToUpdate"
+        ];
+        var createdItemsTasks = itemIds.Select(userId => dbContext.CreateItem(new SettingsGenericEntity
+        {
+            UserId = userId,
+            CanFollow = Enums.PrivacyType.All,
+            CanViewExercises = Enums.PrivacyType.Followers,
+            CanViewFollowers = Enums.PrivacyType.FollowerssOfFollowers,
+            CanViewFollowings = Enums.PrivacyType.JustMe,
+            CanViewFood = Enums.PrivacyType.All,
+            CanViewJournal = Enums.PrivacyType.Followers,
+            CanViewProgress = Enums.PrivacyType.FollowerssOfFollowers
+        }));
+        await Task.WhenAll(createdItemsTasks);
+    }
 
-        private async Task CreateMockData()
-        {
-            var mongoDbSettings = new MongoDbSettings
-            {
-                DatabaseName = "FitnessSettings",
-                CollecttionName = "Settings",
-            };
-            var dbContext = new DbContext<SettingsGenericEntity>(Client, Options.Create(mongoDbSettings));
-            IEnumerable<string> itemIds =
-            [
-                "EntityIdToGet",
-                "EntityIdToDelete",
-                "EntityIdToUpdate"
-            ];
-            var createdItemsTasks = itemIds.Select(userId => dbContext.CreateItem(new SettingsGenericEntity
-            {
-                UserId = userId,
-                CanFollow = Enums.PrivacyType.All,
-                CanViewExercises = Enums.PrivacyType.Followers,
-                CanViewFollowers = Enums.PrivacyType.FollowerssOfFollowers,
-                CanViewFollowings = Enums.PrivacyType.JustMe,
-                CanViewFood = Enums.PrivacyType.All,
-                CanViewJournal = Enums.PrivacyType.Followers,
-                CanViewProgress = Enums.PrivacyType.FollowerssOfFollowers
-            }));
-            await Task.WhenAll(createdItemsTasks);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-                _runner.Dispose();
-        }
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+            _runner.Dispose();
     }
 }

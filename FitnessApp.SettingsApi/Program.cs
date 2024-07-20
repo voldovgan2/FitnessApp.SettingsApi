@@ -7,6 +7,7 @@ using FitnessApp.SettingsApi;
 using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Data;
 using FitnessApp.SettingsApi.DependencyInjection;
+using FitnessApp.SettingsApi.HealthChecks;
 using FitnessApp.SettingsApi.Middleware;
 using FitnessApp.SettingsApi.Services.MessageBus;
 using FitnessApp.SettingsApi.Services.Settings;
