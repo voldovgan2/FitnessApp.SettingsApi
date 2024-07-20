@@ -1,20 +1,15 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using FitnessApp.Common.Abstractions.Controllers;
 using FitnessApp.SettingsApi.Contracts.Input;
 using FitnessApp.SettingsApi.Contracts.Output;
 using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Services.Settings;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessApp.SettingsApi.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-[Produces("application/json")]
-
-[Authorize]
-public class SettingsController(ISettingsService settingsService, IMapper mapper) : Controller
+public class SettingsController(ISettingsService settingsService, IMapper mapper) : FitnessAppBaseController
 {
     [HttpGet("GetSettings/{userId}")]
     public async Task<SettingsContract> GetSettings([FromRoute] string userId)
