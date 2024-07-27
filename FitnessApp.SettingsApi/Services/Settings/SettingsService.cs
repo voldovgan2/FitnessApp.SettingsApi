@@ -2,7 +2,6 @@
 using AutoMapper;
 using FitnessApp.Common.Abstractions.Services.Generic;
 using FitnessApp.SettingsApi.Data;
-using FitnessApp.SettingsApi.Data.Entities;
 using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Models.Output;
 
@@ -10,7 +9,6 @@ namespace FitnessApp.SettingsApi.Services.Settings;
 
 public class SettingsService(ISettingsRepository repository, IMapper mapper) :
     GenericService<
-        SettingsGenericEntity,
         SettingsGenericModel,
         CreateSettingsGenericModel,
         UpdateSettingsGenericModel>(repository, mapper),
