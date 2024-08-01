@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using AutoMapper;
 using FitnessApp.Common.Abstractions.Services.Generic;
 using FitnessApp.SettingsApi.Data;
 using FitnessApp.SettingsApi.Models.Input;
@@ -7,11 +6,11 @@ using FitnessApp.SettingsApi.Models.Output;
 
 namespace FitnessApp.SettingsApi.Services.Settings;
 
-public class SettingsService(ISettingsRepository repository, IMapper mapper) :
+public class SettingsService(ISettingsRepository repository) :
     GenericService<
         SettingsGenericModel,
         CreateSettingsGenericModel,
-        UpdateSettingsGenericModel>(repository, mapper),
+        UpdateSettingsGenericModel>(repository),
     ISettingsService
 {
     public Task<SettingsGenericModel> GetSettingsByUserId(string userId)

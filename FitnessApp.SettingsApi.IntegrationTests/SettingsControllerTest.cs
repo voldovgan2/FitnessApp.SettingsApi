@@ -1,42 +1,19 @@
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using FitnessApp.SettingsApi.Contracts.Input;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using MongoDB.Driver;
 using Xunit;
 
 namespace FitnessApp.SettingsApi.IntegrationTests;
 
 public class SettingsControllerTest : IClassFixture<MongoDbFixture>
 {
-    private readonly MongoDbFixture _fixture;
     private readonly HttpClient _httpClient;
 
     public SettingsControllerTest(MongoDbFixture fixture)
     {
-        _fixture = fixture;
-        var appFactory = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(services =>
-                {
-                    services.RemoveAll<IMongoClient>();
-                    services.AddSingleton<IMongoClient>((_) => _fixture.Client);
-                    services
-                        .AddAuthentication(defaultScheme: AuthConstants.Scheme)
-                        .AddScheme<AuthenticationSchemeOptions, MockAuthHandler>(AuthConstants.Scheme, options => { });
-                })
-                .UseEnvironment("Development");
-            });
-        _httpClient = appFactory.CreateClient();
-        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme: AuthConstants.Scheme);
+        var appFactory = new TestWebApplicationFactory(fixture);
+        _httpClient = appFactory.CreateHttpClient();
     }
 
     [Fact]
