@@ -20,7 +20,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
     public async Task GetSettings_ReturnsOk()
     {
         // Act
-        var response = await _httpClient.GetAsync("api/Settings/GetSettings/EntityIdToGet");
+        var response = await _httpClient.GetAsync($"api/Settings/GetSettings/{Constants.UserIdToGet}");
 
         // Assert
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -32,7 +32,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
         // Arrange
         var createSettingsContract = new CreateSettingsContract
         {
-            UserId = "EntityIdToCreate",
+            UserId = "UserIdToCreate",
             CanFollow = Enums.PrivacyType.All,
             CanViewExercises = Enums.PrivacyType.Followers,
             CanViewFollowers = Enums.PrivacyType.FollowerssOfFollowers,
@@ -55,7 +55,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
         // Arrange
         var createSettingsContract = new UpdateSettingsContract
         {
-            UserId = "EntityIdToUpdate",
+            UserId = $"{Constants.UserIdToUpdate}",
             CanFollow = Enums.PrivacyType.All,
             CanViewExercises = Enums.PrivacyType.Followers,
             CanViewFollowers = Enums.PrivacyType.FollowerssOfFollowers,
@@ -76,7 +76,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
     public async Task DeleteSettings_ReturnsOk()
     {
         // Act
-        var response = await _httpClient.DeleteAsync("api/Settings/DeleteSettings/EntityIdToDelete");
+        var response = await _httpClient.DeleteAsync($"api/Settings/DeleteSettings/{Constants.UserIdToDelete}");
 
         // Assert
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
