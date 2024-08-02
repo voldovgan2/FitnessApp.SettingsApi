@@ -25,7 +25,7 @@ jobs:
         run: dotnet restore
       
       - name: Build project 
-        run: dotnet build FitnessApp.ApiGateway.sln -c Release --no-restore
+        run: dotnet build FitnessApp.SettingsApi.sln -c Release --no-restore
       
       - name: Run tests
         run: dotnet test --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
