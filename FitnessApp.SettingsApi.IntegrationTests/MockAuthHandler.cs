@@ -9,5 +9,5 @@ namespace FitnessApp.SettingsApi.IntegrationTests;
 public class MockAuthenticationHandler(
     IOptionsMonitor<AuthenticationSchemeOptions> options,
     ILoggerFactory logger,
-    UrlEncoder encoder)
-    : MockAuthenticationHandlerBase(options, logger, encoder);
+    UrlEncoder encoder) :
+    MockAuthenticationHandlerBase(options, logger, encoder);

@@ -3,7 +3,7 @@ using FitnessApp.SettingsApi.Data.Entities;
 
 namespace FitnessApp.SettingsApi.IntegrationTests;
 public class TestWebApplicationFactory(MongoDbFixture fixture) :
-    TestAbstractWebApplicationFactoryBase<
+    TestGenericWebApplicationFactoryBase<
         Program,
         MockAuthenticationHandler,
         SettingsGenericEntity>(fixture);

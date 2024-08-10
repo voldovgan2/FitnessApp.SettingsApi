@@ -77,6 +77,7 @@ if ("false".Contains("true"))
     builder.Services.AddHostedService<SettingsMessageTopicSubscribersService>();
 
 builder.Host.ConfigureAppConfiguration();
+builder.Services.AddHealthChecks();
 
 if ("test".Length == 0)
 {
@@ -113,6 +114,7 @@ app.UseAuthorization();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseMiddleware<CorrelationIdHeaderMiddleware>();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 if ("test".Length == 0)
 {

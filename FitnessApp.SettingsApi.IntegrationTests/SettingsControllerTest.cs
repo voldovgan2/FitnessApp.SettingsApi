@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using FitnessApp.Common.IntegrationTests;
 using FitnessApp.SettingsApi.Contracts.Input;
 using Xunit;
 
@@ -13,6 +14,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
     public SettingsControllerTest(MongoDbFixture fixture)
     {
         var appFactory = new TestWebApplicationFactory(fixture);
+        appFactory.SeedData("FitnessSettings", "Settings", IdsConstants.IdsToSeed);
         _httpClient = appFactory.CreateHttpClient();
     }
 
@@ -20,7 +22,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
     public async Task GetSettings_ReturnsOk()
     {
         // Act
-        var response = await _httpClient.GetAsync($"api/Settings/GetSettings/{Constants.UserIdToGet}");
+        var response = await _httpClient.GetAsync($"api/Settings/GetSettings/{IdsConstants.IdToGet}");
 
         // Assert
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
@@ -32,7 +34,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
         // Arrange
         var createSettingsContract = new CreateSettingsContract
         {
-            UserId = "UserIdToCreate",
+            UserId = IdsConstants.IdToCreate,
             CanFollow = Enums.PrivacyType.All,
             CanViewExercises = Enums.PrivacyType.Followers,
             CanViewFollowers = Enums.PrivacyType.FollowerssOfFollowers,
@@ -55,7 +57,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
         // Arrange
         var createSettingsContract = new UpdateSettingsContract
         {
-            UserId = $"{Constants.UserIdToUpdate}",
+            UserId = IdsConstants.IdToUpdate,
             CanFollow = Enums.PrivacyType.All,
             CanViewExercises = Enums.PrivacyType.Followers,
             CanViewFollowers = Enums.PrivacyType.FollowerssOfFollowers,
@@ -76,7 +78,7 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
     public async Task DeleteSettings_ReturnsOk()
     {
         // Act
-        var response = await _httpClient.DeleteAsync($"api/Settings/DeleteSettings/{Constants.UserIdToDelete}");
+        var response = await _httpClient.DeleteAsync($"api/Settings/DeleteSettings/{IdsConstants.IdToDelete}");
 
         // Assert
         Assert.Equal(System.Net.HttpStatusCode.OK, response.StatusCode);
