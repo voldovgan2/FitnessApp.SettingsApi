@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using FitnessApp.Common.Abstractions.Services.Generic;
+using FitnessApp.Common.Abstractions.Services;
 using FitnessApp.SettingsApi.Data;
 using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Models.Output;

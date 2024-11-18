@@ -1,4 +1,4 @@
-﻿using FitnessApp.Common.Abstractions.Db.Repository.Generic;
+﻿using FitnessApp.Common.Abstractions.Db;
 using FitnessApp.SettingsApi.Models.Input;
 using FitnessApp.SettingsApi.Models.Output;
 

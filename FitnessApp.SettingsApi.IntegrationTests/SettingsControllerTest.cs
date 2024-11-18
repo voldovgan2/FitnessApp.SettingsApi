@@ -1,7 +1,7 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using FitnessApp.Common.IntegrationTests;
+using FitnessApp.Common.Tests.Fixtures;
 using FitnessApp.SettingsApi.Contracts.Input;
 using Xunit;
 
@@ -13,8 +13,11 @@ public class SettingsControllerTest : IClassFixture<MongoDbFixture>
 
     public SettingsControllerTest(MongoDbFixture fixture)
     {
-        var appFactory = new TestWebApplicationFactory(fixture);
-        appFactory.SeedData("FitnessSettings", "Settings", IdsConstants.IdsToSeed);
+        var appFactory = new TestWebApplicationFactory(
+            fixture,
+            "FitnessSettings",
+            "Settings",
+            IdsConstants.IdsToSeed);
         _httpClient = appFactory.CreateHttpClient();
     }
 

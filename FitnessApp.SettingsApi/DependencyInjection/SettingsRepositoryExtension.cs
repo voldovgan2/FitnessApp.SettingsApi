@@ -1,5 +1,5 @@
 ﻿using System;
-using FitnessApp.Common.Abstractions.Db.DbContext;
+using FitnessApp.Common.Abstractions.Db;
 using FitnessApp.SettingsApi.Data;
 using FitnessApp.SettingsApi.Data.Entities;
 using Microsoft.Extensions.DependencyInjection;

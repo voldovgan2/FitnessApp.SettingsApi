@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="FitnessApp.Common" Version="9.0.15" />
+    <PackageReference Include="FitnessApp.Common" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Nats" Version="7.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.2" />
@@ -29,7 +29,6 @@
     <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.0" />
-    <PackageReference Include="FitnessApp.MongoDB.Driver" Version="1.0.2"></PackageReference>
     <PackageReference Include="NATS.Client" Version="1.1.1" />
   </ItemGroup>
 </Project>

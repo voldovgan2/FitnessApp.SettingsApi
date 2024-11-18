@@ -34,7 +34,6 @@ builder.Services.AddScoped<IValidator<CreateSettingsContract>, CreateSettingsCon
 
 builder.Services.ConfigureMapper(new MappingProfile());
 builder.Services.ConfigureMongo(builder.Configuration);
-builder.Services.ConfigureVault(builder.Configuration);
 builder.Services.ConfigureSettingsRepository();
 builder.Services.ConfigureNats(builder.Configuration);
 builder.Services.AddSettingsMessageTopicSubscribersService();

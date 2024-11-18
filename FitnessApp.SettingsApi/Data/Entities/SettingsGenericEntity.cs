@@ -1,12 +1,13 @@
-﻿using FitnessApp.Common.Abstractions.Db.Entities.Generic;
+﻿using FitnessApp.Common.Abstractions.Db;
 using FitnessApp.SettingsApi.Enums;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace FitnessApp.SettingsApi.Data.Entities;
 
-public class SettingsGenericEntity : IGenericEntity
+public class SettingsGenericEntity : IWithUserIdEntity
 {
     [BsonId]
+    public string Id { get; set; }
     public string UserId { get; set; }
     public PrivacyType CanFollow { get; set; }
     public PrivacyType CanViewFollowers { get; set; }
