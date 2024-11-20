@@ -12,7 +12,7 @@ public static class SettingsRepositoryExtension
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddTransient<IDbContext<SettingsGenericEntity>, DbContext<SettingsGenericEntity>>();
+        services.AddTransient<IDbContext<SettingsGenericEntity>, SettingsDbContext>();
         services.AddTransient<ISettingsRepository, SettingsRepository>();
 
         return services;

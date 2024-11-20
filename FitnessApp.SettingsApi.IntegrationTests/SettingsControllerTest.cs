@@ -7,17 +7,13 @@ using Xunit;
 
 namespace FitnessApp.SettingsApi.IntegrationTests;
 
-public class SettingsControllerTest : IClassFixture<MongoDbFixture>
+public class SettingsControllerTest : IClassFixture<SettingsMongoDbFixture>
 {
     private readonly HttpClient _httpClient;
 
-    public SettingsControllerTest(MongoDbFixture fixture)
+    public SettingsControllerTest(SettingsMongoDbFixture fixture)
     {
-        var appFactory = new TestWebApplicationFactory(
-            fixture,
-            "FitnessSettings",
-            "Settings",
-            IdsConstants.IdsToSeed);
+        var appFactory = new SettingsWebApplicationFactory(fixture);
         _httpClient = appFactory.CreateHttpClient();
     }
 
