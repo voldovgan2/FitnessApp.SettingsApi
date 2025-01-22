@@ -7,8 +7,8 @@ namespace FitnessApp.SettingsApi.Data.Entities;
 public class SettingsGenericEntity : IWithUserIdEntity
 {
     [BsonId]
-    public string Id { get; set; }
-    public string UserId { get; set; }
+    public string Id { get; init; }
+    public string UserId { get; init; }
     public PrivacyType CanFollow { get; set; }
     public PrivacyType CanViewFollowers { get; set; }
     public PrivacyType CanViewFollowings { get; set; }
