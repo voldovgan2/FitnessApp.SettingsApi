@@ -12,6 +12,9 @@ env:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    outputs: 
+      Version: ${{ steps.gitversion.outputs.SemVer }}
+      CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
     
     services:
       mongo-db:
