@@ -7,7 +7,7 @@ on:
     - develop
 
 env:
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/fitness-app-settings-api
+  API_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/fitness-app-settings-api
 
 jobs:
   build:
@@ -29,15 +29,15 @@ jobs:
           --name mongo_container
           
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 #fetch-depth is needed for GitVersion
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 #fetch-depth is needed for GitVersion
       
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.7
-        with:
-          versionSpec: 5.x
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: 5.x
     
     - name: Determine Version
       uses: gittools/actions/gitversion/execute@v0.9.7
@@ -110,7 +110,7 @@ jobs:
         build-args: |
           NUGET_PAT=${{ secrets.PACKAGE_SOURCE_PASSWORD }}
         push: true
-        tags: ${{env.IMAGE_NAME}}:${{ steps.gitversion.outputs.SemVer }}_alpha
+        tags: ${{env.API_IMAGE_NAME}}:${{ steps.gitversion.outputs.SemVer }}_alpha
         
     - name: Build and push latest
       if: github.ref == 'refs/heads/master'
@@ -121,4 +121,4 @@ jobs:
         build-args: |
           NUGET_PAT=${{ secrets.PACKAGE_SOURCE_PASSWORD }}
         push: true
-        tags: ${{env.IMAGE_NAME}}:latest, ${{env.IMAGE_NAME}}:${{ steps.gitversion.outputs.SemVer }}
+        tags: ${{env.API_IMAGE_NAME}}:latest, ${{env.API_IMAGE_NAME}}:${{ steps.gitversion.outputs.SemVer }}
